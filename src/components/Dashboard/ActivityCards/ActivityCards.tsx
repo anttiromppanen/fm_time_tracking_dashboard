@@ -12,6 +12,10 @@ interface Activity {
   hours: string;
   totalHours: string;
   icon: string;
+  data: {
+    week: string;
+    hours: number;
+  }[];
 }
 
 const activities: Activity[] = [
@@ -20,36 +24,192 @@ const activities: Activity[] = [
     hours: "32hrs",
     totalHours: "36hrs",
     icon: workIcon,
+    data: [
+      {
+        week: "Week 1",
+        hours: 32,
+      },
+      {
+        week: "Week 2",
+        hours: 28,
+      },
+      {
+        week: "Week 3",
+        hours: 34,
+      },
+      {
+        week: "Week 4",
+        hours: 32,
+      },
+      {
+        week: "Week 5",
+        hours: 36,
+      },
+      {
+        week: "Week 6",
+        hours: 40,
+      },
+    ],
   },
   {
     title: "Play",
     hours: "10hrs",
     totalHours: "8hrs",
     icon: playIcon,
+    data: [
+      {
+        week: "Week 1",
+        hours: 10,
+      },
+      {
+        week: "Week 2",
+        hours: 8,
+      },
+      {
+        week: "Week 3",
+        hours: 12,
+      },
+      {
+        week: "Week 4",
+        hours: 8,
+      },
+      {
+        week: "Week 5",
+        hours: 10,
+      },
+      {
+        week: "Week 6",
+        hours: 12,
+      },
+    ],
   },
   {
     title: "Study",
     hours: "4hrs",
     totalHours: "7hrs",
     icon: studyIcon,
+    data: [
+      {
+        week: "Week 1",
+        hours: 4,
+      },
+      {
+        week: "Week 2",
+        hours: 6,
+      },
+      {
+        week: "Week 3",
+        hours: 5,
+      },
+      {
+        week: "Week 4",
+        hours: 5,
+      },
+      {
+        week: "Week 5",
+        hours: 6,
+      },
+      {
+        week: "Week 6",
+        hours: 7,
+      },
+    ],
   },
   {
     title: "Exercise",
     hours: "4hrs",
     totalHours: "5hrs",
     icon: exerciseIcon,
+    data: [
+      {
+        week: "Week 1",
+        hours: 4,
+      },
+      {
+        week: "Week 2",
+        hours: 3,
+      },
+      {
+        week: "Week 3",
+        hours: 5,
+      },
+      {
+        week: "Week 4",
+        hours: 4,
+      },
+      {
+        week: "Week 5",
+        hours: 4,
+      },
+      {
+        week: "Week 6",
+        hours: 5,
+      },
+    ],
   },
   {
     title: "Social",
     hours: "5hrs",
     totalHours: "10hrs",
     icon: socialIcon,
+    data: [
+      {
+        week: "Week 1",
+        hours: 5,
+      },
+      {
+        week: "Week 2",
+        hours: 8,
+      },
+      {
+        week: "Week 3",
+        hours: 6,
+      },
+      {
+        week: "Week 4",
+        hours: 6,
+      },
+      {
+        week: "Week 5",
+        hours: 8,
+      },
+      {
+        week: "Week 6",
+        hours: 10,
+      },
+    ],
   },
   {
     title: "Self Care",
     hours: "2hrs",
     totalHours: "2hrs",
     icon: selfCareIcon,
+    data: [
+      {
+        week: "Week 1",
+        hours: 2,
+      },
+      {
+        week: "Week 2",
+        hours: 15,
+      },
+      {
+        week: "Week 3",
+        hours: 0,
+      },
+      {
+        week: "Week 4",
+        hours: 6,
+      },
+      {
+        week: "Week 5",
+        hours: 2,
+      },
+      {
+        week: "Week 6",
+        hours: 40,
+      },
+    ],
   },
 ];
 
@@ -63,6 +223,7 @@ function ActivityCards() {
           hours={x.hours}
           totalHours={x.totalHours}
           icon={x.icon}
+          data={x.data}
         />
       ))}
     </div>

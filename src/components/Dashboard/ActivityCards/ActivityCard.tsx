@@ -1,9 +1,9 @@
-import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import dotImg from "../../../assets/images/icon-ellipsis.svg";
+import { Line, LineChart, Tooltip, TooltipProps } from "recharts";
 import useTimePeriodStore from "../../../Store/store";
-import { ActivityTypes, ButtonType } from "../../../Types/types";
+import { ActivityTypes } from "../../../Types/types";
 import Card from "../../Card";
+import BottomDefault from "./BottomDefault";
 
 const styleVariants = {
   Work: "bg-userWorkRed",
@@ -19,15 +19,30 @@ type Props = {
   icon: string;
   hours: string;
   totalHours: string;
+  data: {
+    week: string;
+    hours: number;
+  }[];
 };
 
-const totalHoursPreviousPeriodText: Record<ButtonType, string> = {
-  Daily: "Yesterday",
-  Weekly: "Last Week",
-  Monthly: "Last Month",
-};
+function CustomTooltip({
+  active,
+  payload,
+  label,
+}: TooltipProps<number, string>) {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-black p-2 text-2xl">
+        <p className="label">{`Week ${label + 1}`}</p>
+        <p>{payload[0].value} hours</p>
+      </div>
+    );
+  }
 
-function ActivityCard({ title, icon, hours, totalHours }: Props) {
+  return null;
+}
+
+function ActivityCard({ title, icon, hours, totalHours, data }: Props) {
   const [isButtonClicked, setIsButtonClicked] = useState(false);
   const { activeButton } = useTimePeriodStore();
   const baseStyles = "relative z-0 overflow-hidden rounded-t-2xl";
@@ -35,42 +50,45 @@ function ActivityCard({ title, icon, hours, totalHours }: Props) {
   const handleButtonClick = () => setIsButtonClicked((state) => !state);
   return (
     <Card>
-      <div className="relative grid h-full w-full grid-rows-[1fr_2fr] md:grid-rows-[1fr_3fr]">
+      <div
+        className={`
+        relative grid h-full min-h-[160px] w-full grid-rows-[1fr_2fr]
+        md:min-h-[241px] md:min-w-[234px] md:grid-rows-[1fr_3fr]
+        ${isButtonClicked && "!md:grid-rows-[1fr_8fr] !grid-rows-[1fr_4fr]"}`}
+      >
         <div className={`${baseStyles} ${styleVariants[title]}`}>
           <img src={icon} alt="work" className="absolute -top-3 right-3" />
         </div>
-        <div className="relative z-30 -mt-4 grid w-full gap-2 overflow-hidden rounded-2xl bg-userDarkBlue px-10 py-6 hover:cursor-pointer hover:brightness-150">
-          <button
-            type="button"
-            aria-label="Toggle panel"
-            onClick={handleButtonClick}
-            className="absolute left-0 top-0 h-full w-full rounded-2xl"
+        {!isButtonClicked ? (
+          <BottomDefault
+            handleButtonClick={handleButtonClick}
+            title={title}
+            hours={hours}
+            activeButton={activeButton}
+            totalHours={totalHours}
           />
-          <div className="flex items-center justify-between">
-            <h1 className="text-userCardTitleSize font-medium md:text-sm">
-              {title}
-            </h1>
-            <button type="button">
-              <img src={dotImg} alt="" className="p-2 hover:brightness-125" />
-            </button>
+        ) : (
+          <div className="relative z-30 -mt-2 flex flex-row-reverse items-center justify-around rounded-t-2xl bg-userDarkBlue hover:cursor-pointer hover:brightness-150 md:flex-col">
+            <button
+              type="button"
+              aria-label="Toggle panel"
+              onClick={handleButtonClick}
+              className="
+              absolute left-0 top-0 h-full w-full rounded-2xl outline-white 
+              focus-visible:outline focus-visible:outline-2"
+            />
+            <LineChart width={200} height={100} data={data} className="p-1">
+              <Tooltip content={<CustomTooltip />} />
+              <Line
+                type="monotone"
+                dataKey="hours"
+                stroke="#8884d8"
+                strokeWidth={6}
+              />
+            </LineChart>
+            <h1 className="text-2xl">{title}</h1>
           </div>
-          <div className="flex items-center justify-between md:mt-6 md:flex-col md:items-start md:gap-y-4">
-            <h2 className="text-4xl font-light md:text-6xl">{hours}</h2>
-            <AnimatePresence>
-              <div className="overflow-hidden">
-                <motion.p
-                  key={activeButton}
-                  initial={{ y: -10, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: 10, opacity: 0 }}
-                  className="text-sm text-userPaleBlue"
-                >
-                  {totalHoursPreviousPeriodText[activeButton]} - {totalHours}
-                </motion.p>
-              </div>
-            </AnimatePresence>
-          </div>
-        </div>
+        )}
       </div>
     </Card>
   );
