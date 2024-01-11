@@ -68,7 +68,7 @@ function ActivityCard({ title, icon, hours, totalHours, data }: Props) {
             totalHours={totalHours}
           />
         ) : (
-          <div className="relative z-30 -mt-2 flex flex-row-reverse items-center justify-around rounded-t-2xl bg-userDarkBlue hover:cursor-pointer hover:brightness-150 md:flex-col">
+          <div className="relative z-30 -mt-2 flex flex-row-reverse items-center justify-around rounded-2xl bg-userDarkBlue hover:cursor-pointer hover:brightness-150 md:flex-col">
             <button
               type="button"
               aria-label="Toggle panel"
